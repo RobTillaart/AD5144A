@@ -19,7 +19,6 @@ AD51XX::AD51XX(const uint8_t address, TwoWire *wire)
 {
   _address = address;
   _wire = wire;
-  reset();
 }
 
 

@@ -8,9 +8,13 @@
 
 
 #include "Arduino.h"
+#include "Wire.h"
+
+
 #include "AD5144A.h"
 
-AD5144A AD(0x00);   // TODO address
+AD5144A AD(0x50);   // TODO address
+
 
 void setup()
 {
@@ -18,7 +22,11 @@ void setup()
   Serial.println(__FILE__);
 
   Wire.begin();
-  AD.begin();
+  if (AD.begin() == false)
+  {
+    Serial.println("device not found");
+    return;
+  }
 
   for (int p = 0; p < AD.pmCount(); p++)
   {

@@ -21,7 +21,12 @@ void setup()
   Serial.println(__FILE__);
 
   Wire.begin();
-  AD.begin();
+  Wire.begin();
+  if (AD.begin() == false)
+  {
+    Serial.println("device not found");
+    return;
+  }
 
   Serial.println();
   Serial.print("CHANNELS:\t");
