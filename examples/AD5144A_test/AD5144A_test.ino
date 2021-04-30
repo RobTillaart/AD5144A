@@ -10,14 +10,15 @@
 #include "Arduino.h"
 #include "AD5144A.h"
 
-AD5144A AD(0x00);   // TODO
+AD5144A AD(0x00);   // TODO address
 
 void setup()
 {
   Serial.begin(115200);
   Serial.println(__FILE__);
-  return;
+
   Wire.begin();
+  AD.begin();
 
   for (int p = 0; p < AD.pmCount(); p++)
   {

@@ -6,18 +6,16 @@
 
 # AD5144A
 
-Arduino library for I2C digital potentiometer AD5144A
+Arduino library for **I2C** digital potentiometer AD5144A
 
 
 ## Description
 
+The library is new and not tested yet, so use at own risk.
 
-// TODO 
-// best to make a base class an a number of derived classes....
-// 
+The AD5144A devices support standard (100 kHz) and fast (400 kHz) data transfer modes.
 
-The AD5144/AD5144A support standard (100 kHz) and fast
-(400 kHz) data transfer modes.
+This library does not work for the **SPI** versions of these devices.
 
 
 ## I2C address
@@ -28,14 +26,23 @@ See table 12 / 13 datasheet.
 
 The library has a number of functions which are all quite straightforward.
 
+As the library is highly experimental, signatures might change.
 
 ### Constructors
 
-- **AD51XX(uint8_t address, TwoWire \*wire = &Wire)** base class, 
-This class does not distinguish between derived classes.
-The developer is responsible for handling this correctly.
-- **AD5144A(uint8_t address, TwoWire \*wire = &Wire)** 
-creates an instance with 4 potentiometer.
+- **AD51XX(uint8_t address, TwoWire \*wire = &Wire)** base class,  
+This class does not distinguish between the derived classes.  
+The developer is responsible for handling this correctly when using the base class.
+
+Derived classes:
+- **AD5123(uint8_t address, TwoWire \*wire = &Wire)** 4 potentiometer, range 0..127
+- **AD5124(uint8_t address, TwoWire \*wire = &Wire)** 4 potentiometer, range 0..127
+- **AD5143(uint8_t address, TwoWire \*wire = &Wire)** 4 potentiometer, range 0..255
+- **AD5144A(uint8_t address, TwoWire \*wire = &Wire)** 4 potentiometer, range 0..255
+- **AD5122A(uint8_t address, TwoWire \*wire = &Wire)** 2 potentiometer, range 0..127
+- **AD5142A(uint8_t address, TwoWire \*wire = &Wire)** 2 potentiometer, range 0..255
+- **AD5121(uint8_t address, TwoWire \*wire = &Wire)** 1 potentiometer, range 0..127
+- **AD5141(uint8_t address, TwoWire \*wire = &Wire)** 1 potentiometer, range 0..255
 
 
 ### Wire initialization
@@ -47,20 +54,26 @@ creates an instance with 4 potentiometer.
 
 ### Basic IO
 
-- **uint8_t write(rdac, value)** set channel rdac 0/1/2/3 to value 0..255 (128)
-- **uint8_t read(rdac)** read back set value
+Used to set one channel at the time. 
 
+- **uint8_t write(rdac, value)** set channel rdac 0..3 to value 0..255 / 128   
+The value is also written into a cache for later retrieval.
+- **uint8_t read(rdac)** read back set value from cache
+
+Note the SYNCHRONUOUS interface = setting all channels at the same time, is not supported (yet)
 
 ### Misc
 
-- **uint8_t zeroAll()** sets pm's and I/O to 0 or LOW.
-- **uint8_t reset()** 
-- **uint8_t midScale(rdac)** resets one to midpoint = 127.
+- **uint8_t pmCount()** returns the number of potmeters / channels the device has.  
+Useful when writing your own loops over all channels.
+- **uint8_t zeroAll()** sets all channels to 0  
+(in sequence, not at exact same time)
+- **uint8_t midScaleAll()** sets all channels to their midpoint 127 / 63  
+(in sequence, not at exact same time)
+- **uint8_t reset()** check datasheet,
+- **uint8_t midScale(rdac)** resets one channel to its midpoint = 127 / 63
 - **uint8_t readBackRegister(rdac)** read register back, for debugging.
-
-
-### Experimental
-
+takes more time than read does.
 - **uint8_t shutDown()** check datasheet, not tested yet, use at own risk.
 
 

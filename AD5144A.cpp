@@ -80,6 +80,15 @@ void AD51XX::midScaleAll()
 }
 
 
+void AD51XX::maxAll()
+{
+  for (uint8_t rdac = 0; rdac < _potCount; rdac++)
+  {
+    write(rdac, _maxValue);
+  }
+}
+
+
 uint8_t AD51XX::write(const uint8_t rdac, const uint8_t value)
 {
   if (rdac >= _potCount) return AD51XXA_INVALID_POT;

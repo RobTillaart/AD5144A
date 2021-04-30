@@ -33,24 +33,26 @@ public:
   
   void    reset();
   void    zeroAll();      // set all channels to 0
-  void    midScaleAll();  // set channels to their midpoint
+  void    midScaleAll();  // set all channels to their midpoint
+  void    maxAll();       // set all channels to their max
 
   // rdac = 0..3  - zero based indexing...
   uint8_t read(const uint8_t rdac);
   uint8_t write(const uint8_t rdac, const uint8_t value);
 
   uint8_t midScale(const uint8_t rdac);
-  uint8_t pmCount() { return _potCount; };
+  uint8_t pmCount()  { return _potCount; };
+  uint8_t maxValue() { return _maxValue; };
 
   // debugging
-  // returns the last value written in register.
+  // returns the last value written in rdac register.
   uint8_t readBackRegister(const uint8_t rdac);  
 
   uint8_t shutDown(); // experimental ??
 
 protected:
-  uint8_t _potCount = 0;
-  uint8_t _maxValue = 0;
+  uint8_t _potCount = 4;    // unknown
+  uint8_t _maxValue = 255;  // unknown 
 
 private:
   uint8_t send(const uint8_t cmd, const uint8_t value);
