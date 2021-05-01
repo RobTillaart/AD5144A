@@ -54,7 +54,7 @@ public:
   uint8_t maxAll()      { return writeAll(_maxValue); };
   uint8_t zero(const uint8_t rdac) { return write(rdac, 0); };
   uint8_t mid(const uint8_t rdac)  { return write(rdac,  _maxValue/2); };
-  uint8_t max(const uint8_t rdac)  { return write(rdac,  _maxValue); };
+  uint8_t maxValue(const uint8_t rdac)  { return write(rdac,  _maxValue); };
 
 
   // SYNC functions
