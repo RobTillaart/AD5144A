@@ -30,32 +30,89 @@ public:
 #endif
   bool    begin();
   bool    isConnected();
-  
-  void    reset();
-  void    zeroAll();      // set all channels to 0
-  void    midScaleAll();  // set all channels to their midpoint
-  void    maxAll();       // set all channels to their max
 
+  uint8_t reset();
+
+  // BASE functions
   // rdac = 0..3  - zero based indexing...
-  uint8_t read(const uint8_t rdac);
   uint8_t write(const uint8_t rdac, const uint8_t value);
+  // fast read from cache
+  uint8_t read(const uint8_t rdac) { return _lastValue[rdac]; };
 
-  uint8_t midScale(const uint8_t rdac);
+
+  // EEPROM functions
+  // defines power up value; copies between RDAC and EEPROM
+  uint8_t storeEEPROM(const uint8_t rdac);
+  uint8_t storeEEPROM(const uint8_t rdac, const uint8_t value);
+  uint8_t recallEEPROM(const uint8_t rdac);
+
+
+  // ASYNC functions
+  uint8_t writeAll(const uint8_t value);  // set all channels to same value
+  uint8_t zeroAll()     { return writeAll(0); };
+  uint8_t midScaleAll() { return writeAll(_maxValue/2); };
+  uint8_t maxAll()      { return writeAll(_maxValue); };
+  uint8_t zero(const uint8_t rdac) { return write(rdac, 0); };
+  uint8_t mid(const uint8_t rdac)  { return write(rdac,  _maxValue/2); };
+  uint8_t max(const uint8_t rdac)  { return write(rdac,  _maxValue); };
+
+
+  // SYNC functions
+  // preload registers to change all channels synchronuous
+  uint8_t preload(const uint8_t rdac, const uint8_t value);
+  uint8_t preloadAll(const uint8_t value);
+  // copy the preloads to the channels. The bitmask indicates which channels
+  // b00001101 would indicate channel 0, 2 and 3;
+  uint8_t sync(const uint8_t mask);
+
+
+  // TODO 8 functions?  param?  +1 -1 or larger
+  // increment, lin, 6db + 2x all version...
+  // decrement, lin, 6db + 2x all version...
+  // better
+  // lineair(rdac, steps) step = int
+  // decibel(rdac, steps)
+
+
+  // TODO top bottomscale  (all option ==>  4 extra functions)
+  // topScaleOn(rdac);
+  // topScaleOff(rdac);
+  // bottomScaleOn(rdac);
+  // bottomScaleOff(rdac);
+
+
+  // MISC
   uint8_t pmCount()  { return _potCount; };
   uint8_t maxValue() { return _maxValue; };
+  uint8_t shutDown();
 
-  // debugging
-  // returns the last value written in rdac register.
-  uint8_t readBackRegister(const uint8_t rdac);  
 
-  uint8_t shutDown(); // experimental ??
+  // returns the value from internal registers.
+  uint8_t readBackINPUT(const uint8_t rdac)   { return readBack(rdac, 0x00); };
+  uint8_t readBackEEPROM(const uint8_t rdac)  { return readBack(rdac, 0x01); };
+  uint8_t readBackCONTROL(const uint8_t rdac) { return readBack(rdac, 0x02); };
+  uint8_t readBackRDAC(const uint8_t rdac)    { return readBack(rdac, 0x03); };
+
+
+  // USE WITH CARE - READ DATASHEET
+  // write to control register
+  // value :       0                   1
+  // bit 0 : FREEZE RDAC's       normal operation
+  // bit 1 : EEPROM DISABLED     normal operation
+  // bit 2 : normal operation    LINEAR GAIN MODE
+  // bit 3 : normal operation    BURST MODE
+  uint8_t writeControlRegister(uint8_t mask);
+  // TODO separate get set functions ?
+
 
 protected:
   uint8_t _potCount = 4;    // unknown
-  uint8_t _maxValue = 255;  // unknown 
+  uint8_t _maxValue = 255;  // unknown
+
 
 private:
   uint8_t send(const uint8_t cmd, const uint8_t value);
+  uint8_t readBack(const uint8_t rdac, const uint8_t mask);
 
   uint8_t _address;
   uint8_t _lastValue[4];

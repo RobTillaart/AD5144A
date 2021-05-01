@@ -6,13 +6,20 @@
 //    DATE: 2021-04-30
 //     URL: https://github.com/RobTillaart/AD5144A
 //
+//  HISTORY
+//  0.1.0   2021-04-30  initial version
+
 
 #include "AD5144A.h"
 
-// notes
+
 // Commands page 29 datasheet
-// todo - a lot 
-// todo - sync write ... writeSync(val,val,val,val);  don't cares??
+//
+// not implemented (yet)
+// 0      NOP
+// 4 5    linear RDAC in/decrement
+// 6 7    6dB RDAC in/decrement
+// 12 13  topscale bottom scale ???
 
 
 AD51XX::AD51XX(const uint8_t address, TwoWire *wire)
@@ -55,77 +62,113 @@ bool AD51XX::isConnected()
 }
 
 
-void AD51XX::reset()
+uint8_t AD51XX::reset()
 {
-  send(0xB0, 0x00);   // to be tested
+  // COMMAND 14 - page 29
+  return send(0xB0, 0x00);   // to be tested
 }
 
 
-void AD51XX::zeroAll()
+uint8_t AD51XX::writeAll(const uint8_t value)
 {
-  for (uint8_t rdac = 0; rdac < _potCount; rdac++)
+  // COMMAND 1 - page 29
+  for (uint8_t pm = 0; pm < _potCount; pm++)
   {
-    write(rdac, 0);
+    _lastValue[pm] = value;
   }
-}
-
-
-void AD51XX::midScaleAll()
-{
-  for (uint8_t rdac = 0; rdac < _potCount; rdac++)
-  {
-    write(rdac, _maxValue/2);
-  }
-}
-
-
-void AD51XX::maxAll()
-{
-  for (uint8_t rdac = 0; rdac < _potCount; rdac++)
-  {
-    write(rdac, _maxValue);
-  }
+  uint8_t cmd = 0x18;
+  return send(cmd, value);
 }
 
 
 uint8_t AD51XX::write(const uint8_t rdac, const uint8_t value)
 {
+  // COMMAND 1 - page 29
   if (rdac >= _potCount) return AD51XXA_INVALID_POT;
   _lastValue[rdac] = value;
   uint8_t cmd = 0x10 | rdac;
-  return send(cmd, _lastValue[rdac]);  
+  return send(cmd, _lastValue[rdac]);
 }
 
 
-uint8_t AD51XX::read(const uint8_t rdac)
+uint8_t AD51XX::storeEEPROM(const uint8_t rdac)
 {
-  return _lastValue[rdac];  // return from cache
+  // COMMAND 9 - page 29
+  if (rdac >= _potCount) return AD51XXA_INVALID_POT;
+  uint8_t cmd = 0x70 | rdac;
+  return send(cmd, 0x01);
 }
 
-// debugging
-uint8_t AD51XX::readBackRegister(const uint8_t rdac)
-{
-  Wire.beginTransmission(_address);
-  Wire.write(0x30 | rdac);
-  Wire.write(0x03);
-  Wire.endTransmission();
 
-  Wire.requestFrom(_address, (uint8_t)1);
-  return Wire.read();
+uint8_t AD51XX::recallEEPROM(const uint8_t rdac)
+{
+  // COMMAND 10 - page 29
+  if (rdac >= _potCount) return AD51XXA_INVALID_POT;
+  _lastValue[rdac] = readBackEEPROM(rdac);
+  uint8_t cmd = 0x70 | rdac;
+  return send(cmd, 0x00);
 }
 
-uint8_t AD51XX::midScale(const uint8_t rdac)
+
+uint8_t AD51XX::storeEEPROM(const uint8_t rdac, const uint8_t value)
 {
-  return write(rdac, _maxValue/2);
+  // COMMAND 11 - page 29
+  if (rdac >= _potCount) return AD51XXA_INVALID_POT;
+  uint8_t cmd = 0x80 | rdac;
+  return send(cmd, value);
+}
+
+
+uint8_t AD51XX::preload(const uint8_t rdac, const uint8_t value)
+{
+  // COMMAND 2 - page 29
+  if (rdac >= _potCount) return AD51XXA_INVALID_POT;
+  _lastValue[rdac] = value;
+  uint8_t cmd = 0x20 | rdac;
+  return send(cmd, _lastValue[rdac]);
+}
+
+
+uint8_t AD51XX::preloadAll(const uint8_t value)
+{
+  // COMMAND 2 - page 29
+  uint8_t cmd = 0x28;
+  return send(cmd, value);
+}
+
+
+uint8_t AD51XX::sync(const uint8_t mask)
+{
+  // COMMAND 8 - page 29
+  uint8_t cmd = 0x60 | mask;
+  return send(cmd, 0x00);
+  // keep cache correct.
+  uint8_t m = 0x01;
+  for (uint8_t rdac = 0; rdac < _potCount; rdac++)
+  {
+    if (mask & m)
+    {
+      _lastValue[rdac] = readBackRDAC(rdac);
+      m <<= 1;
+    }
+  }
 }
 
 
 uint8_t AD51XX::shutDown()
 {
-  // COMMAND 15 - table 14
+  // COMMAND 15 - table 29
   return send(0xC8, 0x01);   // to be tested
 }
 
+
+uint8_t AD51XX::writeControlRegister(uint8_t mask)
+{
+  // COMMAND 16 - page 29
+  uint8_t cmd = 0xD0;
+  return send(cmd, mask);
+
+}
 
 //////////////////////////////////////////////////////////
 //
@@ -133,10 +176,24 @@ uint8_t AD51XX::shutDown()
 //
 uint8_t AD51XX::send(const uint8_t cmd, const uint8_t value)
 {
+  // COMMAND 1 - page 20
   Wire.beginTransmission(_address);
   Wire.write(cmd);
   Wire.write(value);
   return Wire.endTransmission();
+}
+
+
+uint8_t AD51XX::readBack(const uint8_t rdac, const uint8_t mask)
+{
+  // COMMAND 3 - page 20
+  Wire.beginTransmission(_address);
+  Wire.write(0x30 | rdac);
+  Wire.write(mask);
+  Wire.endTransmission();
+
+  Wire.requestFrom(_address, (uint8_t)1);
+  return Wire.read();
 }
 
 /////////////////////////////////////////////////////////////////////////////

@@ -11,16 +11,21 @@ Arduino library for **I2C** digital potentiometer AD5144A
 
 ## Description
 
-The library is new and not tested yet, so use at own risk.
+The library is new and not tested, so use at own risk.  
+Please report problems and/or success.
 
-The AD5144A devices support standard (100 kHz) and fast (400 kHz) data transfer modes.
+Primary goal is a library for the AD5144A. 
+From the datasheet it is expected it will work for the family of devices.  
+As said before this si not tested.
 
-This library does not work for the **SPI** versions of these devices.
+This library does not work for the **SPI** versions of these devices. See TODO.
 
 
 ## I2C address
 
 See table 12 / 13 datasheet.
+The AD5144A devices support standard (100 kHz) and fast (400 kHz) data transfer modes.
+
 
 ## Interface
 
@@ -80,3 +85,14 @@ takes more time than read does.
 ## Operation
 
 The examples show the basic working of the functions.
+
+
+## TODO
+
+- testing ...
+- example sketches
+- update readme
+- CI test code
+- increment / decrement functions
+- top / bottom scale functions
+- SPI based version of the library ?
