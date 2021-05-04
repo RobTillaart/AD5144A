@@ -25,7 +25,7 @@ void setup()
 
   Serial.print("CONNECT:\t");
   Wire.beginTransmission(ADDRESS);
-  int rv = _Wire.endTransmission();
+  int rv = Wire.endTransmission();
   Serial.println(rv);
 
   Serial.println("LOOP 0..255 POTMETER 0");
