@@ -1,5 +1,5 @@
 //
-//    FILE: AD5144A_test.ino
+//    FILE: AD5144A_test_speed.ino
 //  AUTHOR: Rob Tillaart
 // VERSION: 0.1.0
 // PURPOSE: demo
@@ -7,13 +7,11 @@
 //     URL: https://github.com/RobTillaart/AD5144A
 
 
-#include "Arduino.h"
-#include "Wire.h"
-
-
 #include "AD5144A.h"
 
-AD5144A AD(0x50);   // TODO address
+// select the right type
+// adjust address
+AD5144A AD(0x77);
 
 
 void setup()
@@ -22,7 +20,6 @@ void setup()
   Serial.println(__FILE__);
 
   Wire.begin();
-  
   if (AD.begin() == false)
   {
     Serial.println("device not found");
@@ -74,5 +71,6 @@ void test_i2C_clock(uint32_t clock)
   }
   Serial.println("ok\n");
 }
+
 
 // -- END OF FILE --

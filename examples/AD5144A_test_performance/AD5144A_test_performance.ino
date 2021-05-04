@@ -7,20 +7,20 @@
 //     URL: https://github.com/RobTillaart/AD5144A
 
 
-#include "Arduino.h"
 #include "AD5144A.h"
 
 // select the right type
-AD5144A AD(0x00);          // TODO fix address
+// adjust address
+AD5144A AD(0x77);
 
 uint32_t start, stop;
+
 
 void setup()
 {
   Serial.begin(115200);
   Serial.println(__FILE__);
 
-  Wire.begin();
   Wire.begin();
   if (AD.begin() == false)
   {
@@ -46,6 +46,7 @@ void loop()
 {
 }
 
+
 void test_1000_writes()
 {
   Serial.println();
@@ -61,6 +62,7 @@ void test_1000_writes()
   Serial.println(stop - start);
   Serial.println();
 }
+
 
 void test_1000_reads()
 {
@@ -79,6 +81,7 @@ void test_1000_reads()
   Serial.println(sum);
   Serial.println();
 }
+
 
 void test_midScaleAll()
 {
@@ -103,6 +106,7 @@ void test_midScaleAll()
   Serial.println();
 }
 
+
 void test_zeroAll()  // todo test
 {
   Serial.println();
@@ -125,8 +129,6 @@ void test_zeroAll()  // todo test
   }
   Serial.println();
 }
-
-
 
 
 // -- END OF FILE --
