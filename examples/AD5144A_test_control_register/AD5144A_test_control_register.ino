@@ -26,11 +26,20 @@ void setup()
     return;
   }
 
+  Serial.println("check datasheet");
+  Serial.println("CH\tWP\tEE\tMODE\tBURST");
   for (uint8_t ch = 0; ch < AD.pmCount(); ch++)
   {
+    uint8_t mask = AD.readBackCONTROL(ch);
     Serial.print(ch);
     Serial.print('\t');
-    Serial.print(AD.readBackCONTROL(ch), BIN);
+    Serial.print(mask & 0x01);
+    Serial.print('\t');
+    Serial.print(mask & 0x02);
+    Serial.print('\t');
+    Serial.print(mask & 0x04);
+    Serial.print('\t');
+    Serial.print(mask & 0x08);
     Serial.println();
   }
 
