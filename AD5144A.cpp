@@ -187,11 +187,11 @@ uint8_t AD51XX::send(const uint8_t cmd, const uint8_t value)
   // COMMAND 1 - page 20
   _wire->beginTransmission(_address);  // returns nothing.
   int a = _wire->write(cmd);           // returns bytes written
-  Serial.print("SEND cmd: ");
-  Serial.print(a);
+  // Serial.print("SEND cmd: ");
+  // Serial.print(a);
   a = _wire->write(value);             // returns bytes written
-  Serial.print(" val: ");
-  Serial.println(a);
+  // Serial.print(" val: ");
+  // Serial.println(a);
   return _wire->endTransmission();     // returns status of actual write..
 }
 
@@ -201,16 +201,18 @@ uint8_t AD51XX::readBack(const uint8_t rdac, const uint8_t mask)
   // COMMAND 3 - page 20
   _wire->beginTransmission(_address);
   int a = _wire->write(0x30 | rdac);
-  Serial.print("READBACK cmd: ");
-  Serial.print(a);
+  // Serial.print("READBACK cmd: ");
+  // Serial.print(a);
   a = _wire->write(mask);
-  Serial.print(" val: ");
-  Serial.print(a);
+  // Serial.print(" val: ");
+  // Serial.print(a);
   a = _wire->endTransmission();
-  Serial.print(" TX: ");
-  Serial.println(a);
+  // Serial.print(" TX: ");
+  // Serial.println(a);
   
-  _wire->requestFrom(_address, (uint8_t)1);
+  a = _wire->requestFrom(_address, (uint8_t)1);
+  Serial.print(" RF: ");
+  Serial.println(a);
   return _wire->read();
 }
 
