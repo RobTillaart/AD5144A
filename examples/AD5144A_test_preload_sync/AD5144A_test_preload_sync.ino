@@ -30,17 +30,9 @@ void setup()
     return;
   }
 
-  for (int val = 0; val < 256; val += 17)
-  {
-    for (uint8_t ch = 0; ch < AD.pmCount(); ch++) // all channels
-    {
-      AD.preload(ch, val);
-    }
-    AD.sync();
-    delay(100);
-  }
+  test_preload();
   delay(1000);
-
+  test_preloadAll();
 
   Serial.println("done...");
 }
@@ -62,7 +54,7 @@ void test_preload()
     {
       AD.preload(ch, val);
     }
-    AD.sync();
+    AD.sync(b00001111);
     delay(100);
   }
   Serial.println();
@@ -77,7 +69,7 @@ void test_preloadAll()
   for (int val = 0; val < 256; val += 17)
   {
     AD.preloadAll(val);
-    AD.sync();
+    AD.sync(b00001111);
     delay(100);
   }
   Serial.println();

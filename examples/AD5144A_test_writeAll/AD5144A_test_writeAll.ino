@@ -69,7 +69,7 @@ void test_zeroAll()
   Serial.println();
   Serial.println(__FUNCTION__);
 
-  uint8_t rv = AD.zeroAll(v);
+  uint8_t rv = AD.zeroAll();
   Serial.println(rv);
   
   for (int i = 0; i < AM.pmCount(); i++)
@@ -87,7 +87,7 @@ void test_midScaleAll()
   Serial.println();
   Serial.println(__FUNCTION__);
 
-  uint8_t rv = AD.midScaleAll(v);
+  uint8_t rv = AD.midScaleAll();
   Serial.println(rv);
 
   for (int i = 0; i < AM.pmCount(); i++)
@@ -105,7 +105,7 @@ void test_maxAll()
   Serial.println();
   Serial.println(__FUNCTION__);
 
-  uint8_t rv = AD.maxAll(v);
+  uint8_t rv = AD.maxAll();
   Serial.println(rv);
 
   for (int i = 0; i < AM.pmCount(); i++)
