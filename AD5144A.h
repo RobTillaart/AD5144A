@@ -50,10 +50,10 @@ public:
   // ASYNC functions
   uint8_t writeAll(const uint8_t value);  // set all channels to same value
   uint8_t zeroAll()     { return writeAll(0); };
-  uint8_t midScaleAll() { return writeAll(_maxValue/2); };
+  uint8_t midScaleAll() { return writeAll((_maxValue + 1)/2); };
   uint8_t maxAll()      { return writeAll(_maxValue); };
   uint8_t zero(const uint8_t rdac) { return write(rdac, 0); };
-  uint8_t mid(const uint8_t rdac)  { return write(rdac,  _maxValue/2); };
+  uint8_t mid(const uint8_t rdac)  { return write(rdac,  (_maxValue + 1)/2); };
   uint8_t maxValue(const uint8_t rdac)  { return write(rdac,  _maxValue); };
 
 
@@ -64,21 +64,6 @@ public:
   // copy the preloads to the channels. The bitmask indicates which channels
   // b00001101 would indicate channel 0, 2 and 3;
   uint8_t sync(const uint8_t mask);
-
-
-  // TODO 8 functions?  param?  +1 -1 or larger
-  // increment, lin, 6db + 2x all version...
-  // decrement, lin, 6db + 2x all version...
-  // better
-  // lineair(rdac, steps) step = int
-  // decibel(rdac, steps)
-
-
-  // TODO top bottomscale  (all option ==>  4 extra functions)
-  // topScaleOn(rdac);
-  // topScaleOff(rdac);
-  // bottomScaleOn(rdac);
-  // bottomScaleOff(rdac);
 
 
   // MISC

@@ -6,19 +6,21 @@
 
 # AD5144A
 
-Arduino library for **I2C** digital potentiometer AD5144A
+Arduino library for **I2C AD5144A** 4 channel digital potentiometer.
 
 
 ## Description
 
-The library is new and not tested, so use at own risk.  
-Please report problems and/or success.
+The library is an experimental library for the **I2C AD5144A** 4 channel digital potentiometer.
+- it is not tested extensively, (AD5144A partly)
+- so use at own risk, and
+- please report problems and/or successful .
 
-Primary goal is a library for the AD5144A. 
-From the datasheet it is expected it will work for the family of devices.  
-As said before this si not tested.
+From the datasheet it is expected that the library will work for the family of devices.
+However as said before this is not tested.
 
-This library does not work for the **SPI** versions of these devices. See TODO.
+This library uses the **I2C** interface. It does not work for the **SPI** versions of these devices. 
+See TODO.
 
 
 ## I2C address
@@ -31,11 +33,11 @@ The AD5144A devices support standard (100 kHz) and fast (400 kHz) data transfer 
 
 The library has a number of functions which are all quite straightforward.
 
-As the library is highly experimental, signatures might change.
+As the library is experimental, function signatures might change.
 
 ### Constructors
 
-- **AD51XX(uint8_t address, TwoWire \*wire = &Wire)** base class,  
+- **AD51XX(uint8_t address, TwoWire \*wire = &Wire)** base class, to set the I2C address and optional the Wire bus used. 
 This class does not distinguish between the derived classes.  
 The developer is responsible for handling this correctly when using the base class.
 
@@ -54,7 +56,8 @@ Derived classes:
 
 - **bool begin(uint8_t sda, uint8_t scl)** ESP32 a.o initializing of Wire
 - **bool begin()** for UNO
-- **bool isConnected()** See if address set in constructor is on the bus.
+- **bool isConnected()** See if the address set in the constructor is on the I2C bus.
+- **uint8_t reset()** check datasheet,
 
 
 ### Basic IO
@@ -62,23 +65,56 @@ Derived classes:
 Used to set one channel at the time. 
 
 - **uint8_t write(rdac, value)** set channel rdac 0..3 to value 0..255 / 128   
-The value is also written into a cache for later retrieval.
-- **uint8_t read(rdac)** read back set value from cache
+The value is also written into a cache for fast retrieval later.
+- **uint8_t read(rdac)** read back set value from **cache**, not from the device.
 
-Note the SYNCHRONUOUS interface = setting all channels at the same time, is not supported (yet)
+
+### EEPROM
+
+Value stored in EEPROM is the value the potmeter will start at boot time.
+- **uint8_t storeEEPROM(rdac)** store the current channel value in EEPROM 
+- **uint8_t storeEEPROM(rdac, value)** store a specific value in EEPROM
+- **uint8_t recallEEPROM(rdac)** get the value from EEPROM and set the channel.
+
+
+### Async 
+
+Sets values in sequence, not at exact same time
+
+- **uint8_t writeAll(value)**
+- **uint8_t zeroAll()** sets all channels to 0  
+- **uint8_t midScaleAll()** sets all channels to their midpoint 127 / 63  
+- **uint8_t maxAll()**
+- **uint8_t zero(rdac)**
+- **uint8_t mid(rdac)** resets one channel to its midpoint = 127 / 63
+- **uint8_t maxValue(rdac)**
+
+
+### Sync
+
+- **uint8_t preload(rdac, value)**
+- **uint8_t preloadAll(value)**
+- **uint8_t sync(mask)**
+
+
+### ReadBack
+
+These function read back from the internal registers of the actual device.
+
+- **uint8_t readBackINPUT(rdac)**
+- **uint8_t readBackEEPROM(rdac)**
+- **uint8_t readBackCONTROL(rdac)**
+- **uint8_t readBackRDAC(rdac)**
+
+
+### Write control register
+
+- **uint8_t writeControlRegister(uint8_t mask)**
+
 
 ### Misc
 
-- **uint8_t pmCount()** returns the number of potmeters / channels the device has.  
-Useful when writing your own loops over all channels.
-- **uint8_t zeroAll()** sets all channels to 0  
-(in sequence, not at exact same time)
-- **uint8_t midScaleAll()** sets all channels to their midpoint 127 / 63  
-(in sequence, not at exact same time)
-- **uint8_t reset()** check datasheet,
-- **uint8_t midScale(rdac)** resets one channel to its midpoint = 127 / 63
-- **uint8_t readBackRegister(rdac)** read register back, for debugging.
-takes more time than read does.
+- **uint8_t pmCount()** returns the number of potmeters / channels the device has. Useful when writing your own loops over all channels.
 - **uint8_t shutDown()** check datasheet, not tested yet, use at own risk.
 
 
@@ -88,6 +124,8 @@ The examples show the basic working of the functions.
 
 
 ## TODO
+
+See also open issues.
 
 - testing ...
 - example sketches

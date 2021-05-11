@@ -14,14 +14,33 @@ AD5141	KEYWORD1
 
 # Methods and Functions (KEYWORD2)
 begin	KEYWORD2
+isConnected	KEYWORD2
 reset	KEYWORD2
-zeroAll	KEYWORD2
-midScaleAll	KEYWORD2
 
 read	KEYWORD2
 write	KEYWORD2
 
-midScale	KEYWORD2
+storeEEPROM	KEYWORD2
+storeEEPROM	KEYWORD2
+recallEEPROM	KEYWORD2
+
+writeAll	KEYWORD2
+zeroAll	KEYWORD2
+midScaleAll	KEYWORD2
+maxAll	KEYWORD2
+zeroAll	KEYWORD2
+mid	KEYWORD2
+maxValue	KEYWORD2
+
+preload	KEYWORD2
+preloadAll	KEYWORD2
+sync	KEYWORD2
+
+readBackINPUT	KEYWORD2
+readBackEEPROM	KEYWORD2
+readBackCONTROL	KEYWORD2
+readBackRDAC	KEYWORD2
+
 pmCount	KEYWORD2
 shutDown	KEYWORD2
 
