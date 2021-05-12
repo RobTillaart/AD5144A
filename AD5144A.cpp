@@ -1,7 +1,7 @@
 //
 //    FILE: AD5144A.cpp
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.1.1
+// VERSION: 0.1.2
 // PURPOSE: I2C digital potentiometer AD5144A
 //    DATE: 2021-04-30
 //     URL: https://github.com/RobTillaart/AD5144A
@@ -9,6 +9,7 @@
 //  HISTORY
 //  0.1.0   2021-04-30  initial version
 //  0.1.1   2021-05-12  add topScale() and bottomScale()
+//  0.1.2   2021-05-12  add increment() and decrement() functions
 
 
 #include "AD5144A.h"
@@ -119,6 +120,7 @@ uint8_t AD51XX::storeEEPROM(const uint8_t rdac, const uint8_t value)
   return send(cmd, value);
 }
 
+///////////////////////////////////////////////////////////
 
 uint8_t AD51XX::setTopScale(const uint8_t rdac)
 {
@@ -187,6 +189,104 @@ uint8_t AD51XX::clrBottomScaleAll()
   return send(cmd, 0x00);
 }
 
+///////////////////////////////////////////////////////////
+
+uint8_t AD51XX::setLinearMode(const uint8_t rdac)
+{
+  // COMMAND 3
+  uint8_t mask = readBack(rdac, 0x02);
+  // COMMAND 16 - page 29
+  uint8_t cmd = 0xD0;
+  return send(cmd, mask | 0x04);
+}
+
+
+uint8_t AD51XX::setPotentiometerMode(const uint8_t rdac)
+{
+  // COMMAND 3
+  uint8_t mask = readBack(rdac, 0x02);
+  // COMMAND 16 - page 29
+  uint8_t cmd = 0xD0;
+  return send(cmd, mask & (~0x04));
+}
+
+
+uint8_t AD51XX::getOperationalMode(const uint8_t rdac)
+{
+  uint8_t mask = readBack(rdac, 0x02);
+  return ((mask & 0x04) > 0);
+}
+
+
+uint8_t AD51XX::incrementLinear(const uint8_t rdac)
+{
+  // COMMAND 4
+  if (rdac >= _potCount) return AD51XXA_INVALID_POT;
+  uint8_t cmd = 0x40 | rdac;
+  return send(cmd, 0x01);
+}
+
+
+uint8_t AD51XX::incrementLinearAll()
+{
+  // COMMAND 4
+  uint8_t cmd = 0x48;
+  return send(cmd, 0x01);
+}
+
+
+uint8_t AD51XX::decrementLineair(const uint8_t rdac)
+{
+  // COMMAND 4
+  if (rdac >= _potCount) return AD51XXA_INVALID_POT;
+  uint8_t cmd = 0x40 | rdac;
+  return send(cmd, 0x00);
+}
+
+
+uint8_t AD51XX::decrementLineairAll()
+{
+  // COMMAND 4
+  uint8_t cmd = 0x48;
+  return send(cmd, 0x00);
+}
+
+
+uint8_t AD51XX::increment6dB(const uint8_t rdac)
+{
+  // COMMAND 5
+  if (rdac >= _potCount) return AD51XXA_INVALID_POT;
+  uint8_t cmd = 0x50 | rdac;
+  return send(cmd, 0x01);
+}
+
+
+uint8_t AD51XX::increment6dBAll()
+{
+  // COMMAND 5
+  uint8_t cmd = 0x58;
+  return send(cmd, 0x01);
+}
+
+
+uint8_t AD51XX::decrement6dB(const uint8_t rdac)
+{
+  // COMMAND 5
+  if (rdac >= _potCount) return AD51XXA_INVALID_POT;
+  uint8_t cmd = 0x50 | rdac;
+  return send(cmd, 0x00);
+}
+
+
+uint8_t AD51XX::decrement6dBAll()
+{
+  // COMMAND 5
+  uint8_t cmd = 0x58;
+  return send(cmd, 0x00);
+}
+
+
+///////////////////////////////////////////////////////////
 
 uint8_t AD51XX::preload(const uint8_t rdac, const uint8_t value)
 {
@@ -236,7 +336,6 @@ uint8_t AD51XX::writeControlRegister(uint8_t mask)
   // COMMAND 16 - page 29
   uint8_t cmd = 0xD0;
   return send(cmd, mask);
-
 }
 
 //////////////////////////////////////////////////////////
