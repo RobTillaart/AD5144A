@@ -2,7 +2,7 @@
 //
 //    FILE: AD5144A.h
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.1.0
+// VERSION: 0.1.1
 // PURPOSE: I2C digital PotentioMeter AD5144A
 //    DATE: 2021-04-30
 //     URL: https://github.com/RobTillaart/AD5144A
@@ -56,6 +56,15 @@ public:
   uint8_t mid(const uint8_t rdac)  { return write(rdac,  (_maxValue + 1)/2); };
   uint8_t maxValue(const uint8_t rdac)  { return write(rdac,  _maxValue); };
 
+
+  uint8_t setTopScale(const uint8_t rdac);
+  uint8_t clrTopScale(const uint8_t rdac);
+  uint8_t setTopScaleAll();
+  uint8_t clrTopScaleAll();
+  uint8_t setBottomScale(const uint8_t rdac);
+  uint8_t clrBottomScale(const uint8_t rdac);
+  uint8_t setBottomScaleAll();
+  uint8_t clrBottomScaleAll();
 
   // SYNC functions
   // preload registers to change all channels synchronuous
