@@ -1,13 +1,14 @@
 //
 //    FILE: AD5144A.cpp
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.1.0
+// VERSION: 0.1.1
 // PURPOSE: I2C digital potentiometer AD5144A
 //    DATE: 2021-04-30
 //     URL: https://github.com/RobTillaart/AD5144A
 //
 //  HISTORY
 //  0.1.0   2021-04-30  initial version
+//  0.1.1   2021-05-12  add topScale() and bottomScale()
 
 
 #include "AD5144A.h"
@@ -119,6 +120,74 @@ uint8_t AD51XX::storeEEPROM(const uint8_t rdac, const uint8_t value)
 }
 
 
+uint8_t AD51XX::setTopScale(const uint8_t rdac)
+{
+  // COMMAND 12
+  if (rdac >= _potCount) return AD51XXA_INVALID_POT;
+  uint8_t cmd = 0x90 | rdac;
+  return send(cmd, 0x81);
+}
+
+
+uint8_t AD51XX::clrTopScale(const uint8_t rdac)
+{
+  // COMMAND 12
+  if (rdac >= _potCount) return AD51XXA_INVALID_POT;
+  uint8_t cmd = 0x90 | rdac;
+  return send(cmd, 0x80);
+}
+
+
+uint8_t AD51XX::setTopScaleAll()
+{
+  // COMMAND 12
+  uint8_t cmd = 0x98;
+  return send(cmd, 0x81);
+}
+
+
+uint8_t AD51XX::clrTopScaleAll()
+{
+  // COMMAND 12
+  uint8_t cmd = 0x98;
+  return send(cmd, 0x80);
+}
+
+
+uint8_t AD51XX::setBottomScale(const uint8_t rdac)
+{
+  // COMMAND 13
+  if (rdac >= _potCount) return AD51XXA_INVALID_POT;
+  uint8_t cmd = 0x90 | rdac;
+  return send(cmd, 0x01);
+}
+
+
+uint8_t AD51XX::clrBottomScale(const uint8_t rdac)
+{
+  // COMMAND 13
+  if (rdac >= _potCount) return AD51XXA_INVALID_POT;
+  uint8_t cmd = 0x90 | rdac;
+  return send(cmd, 0x00);
+}
+
+
+uint8_t AD51XX::setBottomScaleAll()
+{
+  // COMMAND 13
+  uint8_t cmd = 0x98;
+  return send(cmd, 0x01);
+}
+
+
+uint8_t AD51XX::clrBottomScaleAll()
+{
+  // COMMAND 13
+  uint8_t cmd = 0x98;
+  return send(cmd, 0x00);
+}
+
+
 uint8_t AD51XX::preload(const uint8_t rdac, const uint8_t value)
 {
   // COMMAND 2 - page 29
@@ -186,12 +255,8 @@ uint8_t AD51XX::send(const uint8_t cmd, const uint8_t value)
 {
   // COMMAND 1 - page 20
   _wire->beginTransmission(_address);  // returns nothing.
-  int a = _wire->write(cmd);           // returns bytes written
-  // Serial.print("SEND cmd: ");
-  // Serial.print(a);
-  a = _wire->write(value);             // returns bytes written
-  // Serial.print(" val: ");
-  // Serial.println(a);
+  _wire->write(cmd);                   // returns bytes written
+  _wire->write(value);                 // returns bytes written
   return _wire->endTransmission();     // returns status of actual write..
 }
 
