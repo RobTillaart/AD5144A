@@ -2,7 +2,7 @@
 //
 //    FILE: AD5144A.h
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.1.1
+// VERSION: 0.1.2
 // PURPOSE: I2C digital PotentioMeter AD5144A
 //    DATE: 2021-04-30
 //     URL: https://github.com/RobTillaart/AD5144A
@@ -12,7 +12,7 @@
 #include "Wire.h"
 
 
-#define AD51XXA_VERSION        (F("0.1.0_experimental"))
+#define AD51XXA_VERSION        (F("0.1.2_experimental"))
 
 
 #define AD51XXA_OK             0
@@ -57,6 +57,7 @@ public:
   uint8_t maxValue(const uint8_t rdac)  { return write(rdac,  _maxValue); };
 
 
+  // page 27
   uint8_t setTopScale(const uint8_t rdac);
   uint8_t clrTopScale(const uint8_t rdac);
   uint8_t setTopScaleAll();
@@ -65,6 +66,23 @@ public:
   uint8_t clrBottomScale(const uint8_t rdac);
   uint8_t setBottomScaleAll();
   uint8_t clrBottomScaleAll();
+
+
+  // page 27-28
+  uint8_t setLinearMode(const uint8_t rdac);
+  uint8_t setPotentiometerMode(const uint8_t rdac);
+  // 0 = potentio, 1 = linear
+  uint8_t getOperationalMode(const uint8_t rdac);
+
+  uint8_t incrementLinear(const uint8_t rdac);
+  uint8_t incrementLinearAll();
+  uint8_t decrementLineair(const uint8_t rdac);
+  uint8_t decrementLineairAll();
+  uint8_t increment6dB(const uint8_t rdac);
+  uint8_t increment6dBAll();
+  uint8_t decrement6dB(const uint8_t rdac);
+  uint8_t decrement6dBAll();
+
 
   // SYNC functions
   // preload registers to change all channels synchronuous
