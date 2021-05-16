@@ -401,6 +401,12 @@ AD5143::AD5143(const uint8_t address, TwoWire *wire) : AD51XX(address, wire)
   _maxValue = 255;
 }
 
+AD5144::AD5144(const uint8_t address, TwoWire *wire) : AD51XX(address, wire)
+{
+  _potCount = 4;
+  _maxValue = 255;
+}
+
 AD5144A::AD5144A(const uint8_t address, TwoWire *wire) : AD51XX(address, wire)
 {
   _potCount = 4;

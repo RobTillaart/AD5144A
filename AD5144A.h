@@ -52,8 +52,9 @@ public:
   uint8_t zeroAll()     { return writeAll(0); };
   uint8_t midScaleAll() { return writeAll((_maxValue + 1)/2); };
   uint8_t maxAll()      { return writeAll(_maxValue); };
-  uint8_t zero(const uint8_t rdac) { return write(rdac, 0); };
-  uint8_t mid(const uint8_t rdac)  { return write(rdac,  (_maxValue + 1)/2); };
+  uint8_t zero(const uint8_t rdac)      { return write(rdac, 0); };
+  uint8_t midScale(const uint8_t rdac)  { return write(rdac,  (_maxValue + 1)/2); };
+  uint8_t mid(const uint8_t rdac)       { return midScale(rdac); };    // will be obsolete
   uint8_t maxValue(const uint8_t rdac)  { return write(rdac,  _maxValue); };
 
 
@@ -147,6 +148,12 @@ class AD5124 : public AD51XX
 class AD5143 : public AD51XX
 {
   AD5143(const uint8_t address, TwoWire *wire = &Wire);
+};
+
+class AD5144 : public AD51XX
+{
+public:
+  AD5144(const uint8_t address, TwoWire *wire = &Wire);
 };
 
 class AD5144A : public AD51XX
