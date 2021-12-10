@@ -125,8 +125,6 @@ protected:
   uint8_t _potCount = 4;    // unknown, default max
   uint8_t _maxValue = 255;  // unknown, default max
 
-
-private:
   uint8_t send(const uint8_t cmd, const uint8_t value);
   uint8_t readBack(const uint8_t rdac, const uint8_t mask);
 
