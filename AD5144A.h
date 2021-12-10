@@ -125,6 +125,7 @@ protected:
   uint8_t _potCount = 4;    // unknown, default max
   uint8_t _maxValue = 255;  // unknown, default max
 
+private:
   uint8_t send(const uint8_t cmd, const uint8_t value);
   uint8_t readBack(const uint8_t rdac, const uint8_t mask);
 
@@ -141,16 +142,19 @@ protected:
 //
 class AD5123 : public AD51XX
 {
+public:
   AD5123(const uint8_t address, TwoWire *wire = &Wire);
 };
 
 class AD5124 : public AD51XX
 {
+public:
   AD5124(const uint8_t address, TwoWire *wire = &Wire);
 };
 
 class AD5143 : public AD51XX
 {
+public:
   AD5143(const uint8_t address, TwoWire *wire = &Wire);
 };
 
@@ -168,6 +172,7 @@ public:
 
 class AD5122A : public AD51XX
 {
+public:
   AD5122A(const uint8_t address, TwoWire *wire = &Wire);
 };
 
