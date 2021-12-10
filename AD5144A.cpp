@@ -13,7 +13,8 @@
 //  0.1.3   2021-10-17  update build-ci, improve readme.md
 //  0.1.4   2021-12-10  remove experimental from version string.
 //                      add headers to library.json,
-//                      minor edits readme, license, 
+//                      minor edits readme, license,
+//                      add check for maxValue in code. 
 
 
 #include "AD5144A.h"
