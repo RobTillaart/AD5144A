@@ -50,7 +50,7 @@ See Future below.
 - y = 1 => 1 potmeter
 - y = 2 => 2 potmeters
 - y = 4 => 4 potmeters
-- y = 3 -> 2 potmeters + 2 rheostats
+- y = 3 => 2 potmeters + 2 rheostats
 
 
 ## I2C
