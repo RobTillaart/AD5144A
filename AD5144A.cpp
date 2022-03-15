@@ -6,7 +6,7 @@
 //    DATE: 2021-04-30
 //     URL: https://github.com/RobTillaart/AD5144A
 //
-//  Datasheet: REV-C
+//  Datasheet: REV-C  7/2019
 
 
 #include "AD5144A.h"
@@ -29,7 +29,7 @@ AD51XX::AD51XX(const uint8_t address, TwoWire *wire)
 
 
 #if defined (ESP8266) || defined(ESP32)
-bool AD51XX::begin(uint8_t dataPin, uint8_t clockPin)
+bool AD51XX::begin(uint8_t dataPin, uint8_t clockPin, bool doReset)
 {
   _wire = &Wire;
   if ((dataPin < 255) && (clockPin < 255))
@@ -39,17 +39,17 @@ bool AD51XX::begin(uint8_t dataPin, uint8_t clockPin)
     _wire->begin();
   }
   if (! isConnected()) return false;
-  reset();    //  See page 28 datasheet REV-C
+  if (doReset) reset();    //  See page 28 datasheet
   return true;
 }
 #endif
 
 
-bool AD51XX::begin()
+bool AD51XX::begin(bool doReset)
 {
   _wire->begin();
   if (! isConnected()) return false;
-  reset();    //  See page 28 datasheet REV-C
+  if (doReset) reset();    //  See page 28 datasheet
   return true;
 }
 

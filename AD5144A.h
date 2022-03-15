@@ -7,7 +7,7 @@
 //    DATE: 2021-04-30
 //     URL: https://github.com/RobTillaart/AD5144A
 //
-//  Datasheet: REV-C
+//  Datasheet: REV-C  7/2019
 
 #include "Arduino.h"
 #include "Wire.h"
@@ -27,10 +27,12 @@ class AD51XX
 public:
   explicit AD51XX(const uint8_t address, TwoWire *wire = &Wire);
 
+  //  default the reset function will be called in begin(), 
+  //  by setting doReset to false one can skip this explicitly.
 #if defined (ESP8266) || defined(ESP32)
-  bool    begin(uint8_t sda, uint8_t scl);
+  bool    begin(uint8_t sda, uint8_t scl, bool doReset = true);
 #endif
-  bool    begin();
+  bool    begin(bool doReset = true);
   bool    isConnected();
 
   uint8_t reset();

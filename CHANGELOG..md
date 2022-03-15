@@ -10,8 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - CHANGELOG.md: moved history from AD5144A.cpp to this file.
 - fix #12 always call reset in begin().
+- add flag to **begin(bool doReset = true)** to explcitly disable the reset
+call. The default is true ==> backwards compatibility / normal use.
 
 ### Changed
+- updated readme.md
 
 ### Fixed
 
