@@ -95,6 +95,8 @@ public:
   uint8_t preloadAll(const uint8_t value);
   //  copy the preloads to the channels. The bit mask indicates which channels
   //  b00001101 would indicate channel 0, 2 and 3;
+  //  sync should not have a default mask as one doesn't know which preloads 
+  //  are set and which not.
   uint8_t sync(const uint8_t mask);
 
 
