@@ -371,7 +371,7 @@ uint8_t AD51XX::readBack(const uint8_t rdac, const uint8_t mask)
   // COMMAND 3 - page 20
   _wire->beginTransmission(_address);
   _wire->write(0x30 | rdac);
-  _wire->write(mask)
+  _wire->write(mask);
   _wire->endTransmission();
   _wire->requestFrom(_address, (uint8_t)1);
   return _wire->read();
