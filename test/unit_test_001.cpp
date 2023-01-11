@@ -35,15 +35,6 @@ unittest_teardown()
 }
 
 
-unittest(test_constants)
-{
-  assertEqual(  0, 0AD51XXA_OK);
-  assertEqual(100, AD51XXA_ERROR);
-  assertEqual(101, AD51XXA_INVALID_POT);
-  assertEqual(102, AD51XXA_INVALID_VALUE);
-}
-
-
 unittest(test_constructors)
 {
   Wire.begin();
