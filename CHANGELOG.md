@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [0.2.0] - 2023-01-11
+- update GitHub actions
+- update license
+- add test_constants to unit test
+- removed mid() ==> use midScale() instead
+- moved code from .h to .cpp
+
+----
+
 ## [0.1.9] - 2022-12-02
 - fix #21
 - update readme.md + comments
@@ -12,7 +21,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - move part of code to .cpp file (prep 0.2.0)
 - update keywords.txt
 - minor refactor
-
 
 ## [0.1.8] - 2022-10-25
 - add rp2040 to build

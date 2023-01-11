@@ -1,7 +1,6 @@
 //
 //    FILE: unit_test_001.cpp
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.1.0
 //    DATE: 2021-04-30
 // PURPOSE: unit tests for I2C digital PotentioMeter AD5144A
 //          https://github.com/RobTillaart/AD5144A
@@ -33,6 +32,15 @@ unittest_setup()
 
 unittest_teardown()
 {
+}
+
+
+unittest(test_constants)
+{
+  assertEqual(  0, 0AD51XXA_OK);
+  assertEqual(100, AD51XXA_ERROR);
+  assertEqual(101, AD51XXA_INVALID_POT);
+  assertEqual(102, AD51XXA_INVALID_VALUE);
 }
 
 
