@@ -30,7 +30,6 @@ AD51XX::AD51XX(const uint8_t address, TwoWire *wire)
 
 bool AD51XX::begin(bool doReset)
 {
-  _wire->begin();
   if (! isConnected()) return false;
   if (doReset) reset();    //  See page 28 datasheet
   return true;

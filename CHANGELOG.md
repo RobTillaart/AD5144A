@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.3.0] - 2023-11-24.
 - simplify **begin()**, remove setting Wire pins from library.
 - add **getAddress()**
+- update readme.md
 
 ----
 
