@@ -30,6 +30,15 @@ The library does not work for the **SPI** versions of these devices.
 See Future below.
 
 
+#### Breaking change
+
+Version 0.3.0 introduced a breaking change.
+You cannot set the pins in **begin()** any more.
+This reduces the dependency of processor dependent Wire implementations.
+The user has to call **Wire.begin()** and can optionally set the Wire pins 
+before calling **begin()**.
+
+
 #### Types supported
 
 |  device   | #potmeters | #rheostats |  range   |  tested  |
