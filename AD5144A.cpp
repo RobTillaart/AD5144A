@@ -37,7 +37,7 @@ bool AD51XX::begin(bool doReset)
 }
 
 
-bool AD51XX::getAddress()
+uint8_t AD51XX::getAddress()
 {
   return _address;
 }
