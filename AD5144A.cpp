@@ -430,13 +430,19 @@ uint8_t AD51XX::shutDown()
 
 uint8_t AD51XX::readBackINPUT(const uint8_t rdac)
 {
-  return readBack(rdac, 0x00);
+  uint8_t value = readBack(rdac, 0x00);
+  //  issue #28, page 20 datasheet INPUT SHIFT REGISTER
+  if (_maxValue == 127) value >>= 1;
+  return value;
 }
 
 
 uint8_t AD51XX::readBackEEPROM(const uint8_t rdac)
 {
-  return readBack(rdac, 0x01);
+  uint8_t value = readBack(rdac, 0x01);
+  //  issue #28, page 20 datasheet INPUT SHIFT REGISTER
+  if (_maxValue == 127) value >>= 1;
+  return value;
 }
 
 
@@ -448,7 +454,10 @@ uint8_t AD51XX::readBackCONTROL(const uint8_t rdac)
 
 uint8_t AD51XX::readBackRDAC(const uint8_t rdac)
 {
-  return readBack(rdac, 0x03);
+  uint8_t value = readBack(rdac, 0x03);
+  //  issue #28, page 20 datasheet INPUT SHIFT REGISTER
+  if (_maxValue == 127) value >>= 1;
+  return value;
 }
 
 
