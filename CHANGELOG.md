@@ -5,9 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [0.4.0] - 2025-04-23
+- fix #28, support for AD5122A, affects several functions.
+- update readme.md
+- minor edits
+
+----
+
 ## [0.3.1] - 2024-01-25
 - update readme.md (multiplexer)
-
 
 ## [0.3.0] - 2023-11-24.
 - simplify **begin()**, remove setting Wire pins from library.
