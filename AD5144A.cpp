@@ -54,7 +54,7 @@ uint8_t AD51XX::reset()
   //  read the cache from EEPROM.
   for (uint8_t rdac = 0; rdac < _potCount; rdac++)
   {
-    _lastValue[rdac] = readBackEEPROM(rdac);
+    _lastValue[rdac] = readBack(rdac, 0x01);  //  readBack EEPROM value.
   }
 }
 
@@ -158,7 +158,7 @@ uint8_t AD51XX::recallEEPROM(const uint8_t rdac)
 {
   //  COMMAND 10 - page 29
   if (rdac >= _potCount) return AD51XXA_INVALID_POT;
-  _lastValue[rdac] = readBackEEPROM(rdac);
+  _lastValue[rdac] = readBack(rdac, 0x01);  //  read back EEPROM value.
   uint8_t cmd = 0x70 | rdac;
   return send(cmd, 0x00);
 }
@@ -397,7 +397,7 @@ uint8_t AD51XX::sync(const uint8_t mask)
   {
     if (mask & m)
     {
-      _lastValue[rdac] = readBackRDAC(rdac);
+      _lastValue[rdac] = readBack(rdac, 0x03);  //  read back RDAC
       m <<= 1;
     }
   }
