@@ -57,7 +57,7 @@ public:
   uint8_t recallEEPROM(const uint8_t rdac);
 
 
-  //  page 27
+  //  page 27 - not tested yet.
   uint8_t setTopScale(const uint8_t rdac);
   uint8_t clrTopScale(const uint8_t rdac);
   uint8_t setTopScaleAll();
@@ -68,12 +68,13 @@ public:
   uint8_t clrBottomScaleAll();
 
 
-  //  page 27-28
+  //  page 27-28 - not tested yet.
   uint8_t setLinearMode(const uint8_t rdac);
   uint8_t setPotentiometerMode(const uint8_t rdac);
   //  0 = potentiometer, 1 = linear
   uint8_t getOperationalMode(const uint8_t rdac);
 
+  //  page 27-28 - not tested yet.
   uint8_t incrementLinear(const uint8_t rdac);
   uint8_t incrementLinearAll();
   uint8_t decrementLineair(const uint8_t rdac);

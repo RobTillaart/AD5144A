@@ -203,11 +203,14 @@ If value > maxValue an error **AD51XXA_INVALID_VALUE** is returned.
 
 ### Synchronous
 
-- **uint8_t preload(uint8_t rdac, uint8_t value)** prepare a single rdac for a new value but only use it after **sync()** is called.
+- **uint8_t preload(uint8_t rdac, uint8_t value)** prepare a single rdac 
+for a new value but only use it after **sync()** is called.
 If value > maxValue an error **AD51XXA_INVALID_VALUE** is returned.
-- **uint8_t preloadAll(uint8_t value)** prepare all rdacs with the same value, and wait for **sync()**.
+- **uint8_t preloadAll(uint8_t value)** prepare all rdacs with the same value, 
+and wait for **sync()**.
 If value > maxValue an error **AD51XXA_INVALID_VALUE** is returned.
-- **uint8_t sync(uint8_t mask)** will transfer the preloaded values to the (4) rdacs at the very same moment.
+- **uint8_t sync(uint8_t mask)** will transfer the preloaded values to the 
+(4) rdacs at the very same moment.
 The 4-bit mask is used to select which rdacs to synchronize.
 
 
@@ -215,29 +218,35 @@ The 4-bit mask is used to select which rdacs to synchronize.
 
 See page 27 datasheet REV-C - TODO testing.
 
-- **uint8_t setTopScale(uint8_t rdac)**
-- **uint8_t clrTopScale(uint8_t rdac)**
-- **uint8_t setTopScaleAll()**
-- **uint8_t clrTopScaleAll()**
-- **uint8_t setBottomScale(uint8_t rdac)**
-- **uint8_t clrBottomScale(uint8_t rdac)**
+**WARNING - USE WITH CARE**
+
+Do not set both top scale and bottom scale as the resistance of AB will drop
+from 100 kΩ to 120 Ω, possibly resulting in damage. (to be verified).
+
+- **uint8_t setTopScale(uint8_t rdac)** the resistance between Terminal A and 
+Terminal W is decreased with 1 LSB e.g. from 130 Ω to 60 Ω (RAB = 100 kΩ). 
+- **uint8_t clrTopScale(uint8_t rdac)** go back to 130 Ω.
+- **uint8_t setTopScaleAll()** idem.
+- **uint8_t clrTopScaleAll()** idem.
+- **uint8_t setBottomScale(uint8_t rdac)** the resistance between Terminal B and 
+Terminal W is decreased with 1 LSB e.g. from 130 Ω to 60 Ω (RAB = 100 kΩ). 
+- **uint8_t clrBottomScale(uint8_t rdac)** go back to 130 Ω.
 - **uint8_t setBottomScaleAll()**
 - **uint8_t clrBottomScaleAll()**
 
 
 ### Operational modes
 
-See page 27-28 datasheet REV-C - TODO testing.
+See page 27-28 datasheet REV-C - TODO investigate working and testing.
 
 - **uint8_t setLinearMode(uint8_t rdac)**
 - **uint8_t setPotentiometerMode(uint8_t rdac)**
-- **// 0 = potentiometer, 1 = linear
-- **uint8_t getOperationalMode(uint8_t rdac)**
+- **uint8_t getOperationalMode(uint8_t rdac)** returns 0 = potentiometer, 1 = linear
 
 
 ### Increment / decrement
 
-See page 27-28 datasheet REV-C - TODO testing.
+See page 27-28 datasheet REV-C - TODO investigate working and testing.
 
 - **uint8_t incrementLinear(uint8_t rdac)**
 - **uint8_t incrementLinearAll()**
@@ -288,7 +297,13 @@ The examples show the basic working of the functions.
 
 #### Should
 
-- more testing with hardware.
+- more testing with (different) hardware.
+- test bottomScale and TopScale functions
+  - including simultaneous. (dangerous?)
+  - does library need a build in protection?
+- investigate linear / potentiometer mode 
+- investigate linear and 6dB increment decrement.
+
 
 #### Could
 

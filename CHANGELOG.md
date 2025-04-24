@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - fix for preload() and preloadAll()
 - fix for reset() + sync()
 - update readme.md
+- update examples
 - minor edits
 
 ----
