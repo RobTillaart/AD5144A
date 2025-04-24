@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.4.0] - 2025-04-23
 - fix #28, support for AD5122A, affects several functions. Kudos to Jenibluere.
 - fix for preload() and preloadAll()
+- fix for reset() + sync()
 - update readme.md
 - minor edits
 

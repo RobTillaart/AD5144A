@@ -50,12 +50,14 @@ bool AD51XX::isConnected()
 uint8_t AD51XX::reset()
 {
   //  COMMAND 14 - page 29
-  return send(0xB0, 0x00);   //  to be tested
+  uint8_t retVal = send(0xB0, 0x00);   //  to be tested
+
   //  read the cache from EEPROM.
   for (uint8_t rdac = 0; rdac < _potCount; rdac++)
   {
     _lastValue[rdac] = readBack(rdac, 0x01);  //  readBack EEPROM value.
   }
+  return retVal;
 }
 
 
@@ -390,7 +392,7 @@ uint8_t AD51XX::sync(const uint8_t mask)
 {
   //  COMMAND 8 - page 29
   uint8_t cmd = 0x60 | mask;
-  return send(cmd, 0x00);
+  uint8_t retVal = send(cmd, 0x00);
   //  keep cache correct.
   uint8_t m = 0x01;
   for (uint8_t rdac = 0; rdac < _potCount; rdac++)
@@ -401,6 +403,7 @@ uint8_t AD51XX::sync(const uint8_t mask)
       m <<= 1;
     }
   }
+  return retVal;
 }
 
 
