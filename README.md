@@ -16,14 +16,16 @@ Arduino library for **I2C AD5144A** 4 channel digital potentiometer.
 Library also provides classes for AD5123, AD5124, AD5143, AD5144, AD5144A, AD5122A, AD5142A, AD5121, AD5141.
 These are have different number of potentiometers, rheostats and range but are functional compatible,
 
+
 ## Description
 
 **Experimental**
 
-The library is an experimental library for the **I2C AD5144A** 4 channel digital potentiometer and compatibles.
-Tests have been done with the AD5144A only.
-From the datasheet it is expected that the library will work for the family of related AD devices.
-See table below. However these are not tested, therefore experimental.
+The library gives easy control over the **I2C AD5144A** 4 channel digital potentiometer and compatibles.
+
+From the datasheets it is expected that this library will work for the family of related AD devices.
+See the table below. However the library is only partially tested, therefore the label experimental.
+
 
 If there are problems, please file an issue. Also interested in success stories :)
 
@@ -32,10 +34,14 @@ This library uses the **I2C** interface to communicate with the device.
 The library does not work for the **SPI** versions of these devices.
 See Future section below.
 
+Feedback as always is welcome.
+
 
 ### Breaking change 0.4.0
 
-Improved support for AD5122A and possible other 128 bit devices.
+Fixed the working for AD5122A and possible other 7 bit (range 0..127) devices.
+
+As this is a bug fix, this release makes pre-0.4.0 versions obsolete.
 
 
 ### Breaking change 0.3.0
@@ -54,10 +60,10 @@ before calling **begin()**.
 |  AD5123   |     2      |     2      |  0..127  |  no      |
 |  AD5124   |     4      |     0      |  0..127  |  no      |
 |  AD5143   |     2      |     2      |  0..255  |  no      |
-|  AD5144   |     4      |     0      |  0..255  |  partial |
-|  AD5144A  |     4      |     0      |  0..255  |  partial |
-|  AD5122A  |     2      |     0      |  0..127  |  no      |  See #28
-|  AD5142A  |     2      |     0      |  0..255  |  no      |
+|  AD5144   |     4      |     0      |  0..255  |  partial |  see #2
+|  AD5144A  |     4      |     0      |  0..255  |  partial |  me
+|  AD5122A  |     2      |     0      |  0..127  |  partial |  see #28
+|  AD5142A  |     2      |     0      |  0..255  |  partial |  see #15
 |  AD5121   |     1      |     0      |  0..127  |  no      |
 |  AD5141   |     1      |     0      |  0..255  |  no      |
 
@@ -121,13 +127,14 @@ As the library is experimental, function signatures might change in the future.
 
 ### Constructor
 
-- **AD51XX(uint8_t address, TwoWire \*wire = &Wire)** base class, to set the I2C address and optional the Wire bus used.
+- **AD51XX(uint8_t address, TwoWire \*wire = &Wire)** base class, sets the I2C address and optional the Wire bus used.
 This class does not distinguish between the derived classes.
-The developer is responsible for handling these differences correctly when using the base class.
+It assumes a range of 0..255 and 4 potentiometers so it could work to some extent for all device types.
+The developer is responsible for handling the differences in range and potmeters when using the base class.
 
 ### Derived classes
 
-Same as above.
+Same as above, now with specified range and number of potentiometers.
 
 - **AD5123(uint8_t address, TwoWire \*wire = &Wire)**
 - **AD5124(uint8_t address, TwoWire \*wire = &Wire)**
@@ -206,7 +213,7 @@ The 4-bit mask is used to select which rdacs to synchronize.
 
 ### TopScale BottomScale
 
-See page 27 datasheet REV-C
+See page 27 datasheet REV-C - TODO testing.
 
 - **uint8_t setTopScale(uint8_t rdac)**
 - **uint8_t clrTopScale(uint8_t rdac)**
@@ -220,7 +227,7 @@ See page 27 datasheet REV-C
 
 ### Operational modes
 
-See page 27-28 datasheet REV-C
+See page 27-28 datasheet REV-C - TODO testing.
 
 - **uint8_t setLinearMode(uint8_t rdac)**
 - **uint8_t setPotentiometerMode(uint8_t rdac)**
@@ -230,7 +237,7 @@ See page 27-28 datasheet REV-C
 
 ### Increment / decrement
 
-See page 27-28 datasheet REV-C
+See page 27-28 datasheet REV-C - TODO testing.
 
 - **uint8_t incrementLinear(uint8_t rdac)**
 - **uint8_t incrementLinearAll()**
