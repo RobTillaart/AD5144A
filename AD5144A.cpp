@@ -52,7 +52,7 @@ uint8_t AD51XX::reset()
   //  COMMAND 14 - page 29 datasheet
   uint8_t cmd = 0xB0;
   uint8_t retVal = send(cmd, 0x00);
-  if (retval == AD51XXA_OK)
+  if (retVal == AD51XXA_OK)
   {
     //  update cache from EEPROM.
     for (uint8_t rdac = 0; rdac < _potCount; rdac++)
