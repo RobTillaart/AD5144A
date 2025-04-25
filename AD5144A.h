@@ -86,11 +86,12 @@ public:
 
 
   //  SYNC functions
+  //  page 29 - not tested yet.
   //  preload registers to change all channels synchronous
   uint8_t preload(const uint8_t rdac, const uint8_t value);
   uint8_t preloadAll(const uint8_t value);
   //  copy the preloads to the channels. The bit mask indicates which channels
-  //  b00001101 would indicate channel 0, 2 and 3;
+  //  b00001101 would indicate channel 0, 2 and 3 for the AD5144A (other devices?)
   //  sync can not have a default mask as one doesn't know which preloads
   //  are set and which not.
   uint8_t sync(const uint8_t mask);

@@ -118,6 +118,7 @@ too if they are behind the multiplexer.
 ## Interface
 
 The library has a number of functions which are all quite straightforward.
+Checking return values increases robustness of your code.
 
 As the library is experimental, function signatures might change in the future.
 

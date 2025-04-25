@@ -49,13 +49,16 @@ bool AD51XX::isConnected()
 
 uint8_t AD51XX::reset()
 {
-  //  COMMAND 14 - page 29
-  uint8_t retVal = send(0xB0, 0x00);   //  to be tested
-
-  //  read the cache from EEPROM.
-  for (uint8_t rdac = 0; rdac < _potCount; rdac++)
+  //  COMMAND 14 - page 29 datasheet
+  uint8_t cmd = 0xB0;
+  uint8_t retVal = send(cmd, 0x00);
+  if (retval == AD51XXA_OK)
   {
-    _lastValue[rdac] = readBack(rdac, 0x01);  //  readBack EEPROM value.
+    //  update cache from EEPROM.
+    for (uint8_t rdac = 0; rdac < _potCount; rdac++)
+    {
+      _lastValue[rdac] = readBack(rdac, 0x01);  //  readBack EEPROM value.
+    }
   }
   return retVal;
 }
@@ -390,17 +393,25 @@ uint8_t AD51XX::preloadAll(const uint8_t value)
 
 uint8_t AD51XX::sync(const uint8_t mask)
 {
-  //  COMMAND 8 - page 29
+  //  mask range check, only lower 4 bits might be set
+  //  note it differs per device type and this is minimum check.
+  if (mask > 0x0F) return AD51XXA_ERROR;
+
+  //  COMMAND 8 - page 29 datasheet
   uint8_t cmd = 0x60 | mask;
   uint8_t retVal = send(cmd, 0x00);
-  //  keep cache correct.
-  uint8_t m = 0x01;
-  for (uint8_t rdac = 0; rdac < _potCount; rdac++)
+  if (retVal == AD51XXA_OK)
   {
-    if (mask & m)
+    //  keep cache correct.
+    //  to be tested for different device types.
+    uint8_t m = 0x01;
+    for (uint8_t rdac = 0; rdac < _potCount; rdac++)
     {
-      _lastValue[rdac] = readBack(rdac, 0x03);  //  read back RDAC
-      m <<= 1;
+      if (mask & m)
+      {
+        _lastValue[rdac] = readBack(rdac, 0x03);  //  read back RDAC
+        m <<= 1;
+      }
     }
   }
   return retVal;
@@ -427,7 +438,8 @@ uint8_t AD51XX::shutDown()
 {
   //  COMMAND 15 - table 29
   //  shutdown all channels
-  return send(0xC8, 0x01);   // to be tested
+  uint8_t cmd = 0xC8;
+  return send(cmd, 0x01);   // to be tested
 }
 
 
